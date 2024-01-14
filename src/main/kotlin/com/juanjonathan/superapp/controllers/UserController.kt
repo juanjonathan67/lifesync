@@ -77,7 +77,7 @@ class UserController (@Autowired private val userRepository: UserRepository){
   @GetMapping("/findByUsername")
   fun findUserByUsername(@RequestParam(name = "username") username: String): ResponseEntity<User>{
     try {
-      val user = userRepository.findUserByEmail(username)
+      val user = userRepository.findUserByUsername(username)
       return ResponseEntity(user, HttpStatus.OK)
     } catch (error : Exception) {
       return ResponseEntity(HttpStatus.NOT_FOUND)
