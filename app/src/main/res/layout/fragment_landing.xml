@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/colorSurface"
+    android:orientation="vertical"
+    tools:context=".ui.landing.LandingFragment">
+
+    <ImageView
+        android:id="@+id/ivLogo"
+        android:layout_width="match_parent"
+        android:layout_height="85dp"
+        android:layout_marginTop="60dp"
+        android:contentDescription="@string/logo"
+        android:src="@drawable/lifesync_logo" />
+
+    <TextView
+        android:id="@+id/tvWelcome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/welcome"
+        android:textStyle="bold"
+        android:textSize="42sp"
+        android:maxLines="2"
+        android:layout_marginTop="60dp"
+        android:layout_marginHorizontal="60dp" />
+
+    <TextView
+        android:id="@+id/tvDesc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/landing_desc"
+        android:textSize="24sp"
+        android:layout_marginTop="45dp"
+        android:layout_marginHorizontal="60dp"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btSignIn"
+        android:layout_width="220dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="80dp"
+        android:text="@string/landing_signIn"
+        android:textColor="@color/black"
+        android:paddingVertical="15dp"
+        android:backgroundTint="?attr/colorTertiaryContainer"
+        app:cornerRadius="15dp"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btSignUp"
+        android:layout_width="220dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:text="@string/landing_signUp"
+        android:textColor="@color/black"
+        android:paddingVertical="15dp"
+        android:backgroundTint="?attr/colorTertiaryContainer"
+        app:cornerRadius="15dp"/>
+
+</LinearLayout>

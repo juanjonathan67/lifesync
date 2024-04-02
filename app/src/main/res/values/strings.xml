@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">LifeSync</string>
+    <string name="logo">Logo</string>
+    <string name="welcome">Welcome to LifeSync!</string>
+    <string name="landing_desc">Your go-to Super App for effortless daily task management.</string>
+    <string name="landing_signIn">Already signed up? Sign in</string>
+    <string name="landing_signUp">New to LifeSync? Sign up</string>
+
+    <string name="fragment_signIn">Sign In</string>
+    <string name="fragment_signIn_emailHint">Email or username</string>
+    <string name="fragment_signIn_passwordHint">Password</string>
+    <string name="fragment_signIn_button">Sign In</string>
+    <string name="fragment_signUp">Sign Up</string>
+    <string name="fragment_signUp_emailHint">Email</string>
+    <string name="fragment_signUp_username">Username</string>
+    <string name="fragment_signUp_confirmPasswordHint">Confirm Password</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="navigation_notes">Notes</string>
+    <string name="navigation_schedule">Schedule</string>
+    <string name="note_title">Note title</string>
+    <string name="note_description">Note description</string>
+    <string name="image_url">Image URL</string>
+</resources>
