@@ -27,4 +27,10 @@ interface UserDao {
 
     @Query("DELETE FROM users")
     fun deleteUser()
+
+    @Query("DELETE FROM notes")
+    fun deleteNote()
+
+    @Query("DELETE FROM tasks")
+    fun deleteTask()
 }

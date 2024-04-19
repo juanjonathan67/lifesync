@@ -5,7 +5,6 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/colorSurface"
     android:orientation="vertical"
     tools:context=".ui.landing.LandingFragment">
 
@@ -46,7 +45,6 @@
         android:text="@string/landing_signIn"
         android:textColor="@color/black"
         android:paddingVertical="15dp"
-        android:backgroundTint="?attr/colorTertiaryContainer"
         app:cornerRadius="15dp"/>
 
     <com.google.android.material.button.MaterialButton
@@ -58,7 +56,6 @@
         android:text="@string/landing_signUp"
         android:textColor="@color/black"
         android:paddingVertical="15dp"
-        android:backgroundTint="?attr/colorTertiaryContainer"
         app:cornerRadius="15dp"/>
 
 </LinearLayout>

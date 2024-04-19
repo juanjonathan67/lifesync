@@ -3,6 +3,7 @@ package com.dicoding.lifesync.ui.main.tabs.notes
 import android.annotation.SuppressLint
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,9 +12,11 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.dicoding.lifesync.R
+import com.dicoding.lifesync.data.Result
 import com.dicoding.lifesync.data.local.entity.NoteEntity
 import com.dicoding.lifesync.data.local.entity.UserWithNoteEntity
 import com.dicoding.lifesync.data.remote.response.NoteItem
@@ -25,6 +28,7 @@ import com.dicoding.lifesync.ui.main.MainActivity.Companion.EXTRA_USER
 import com.dicoding.lifesync.utils.ViewModelFactory
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 
 class NotesFragment : Fragment() {
 
@@ -57,14 +61,56 @@ class NotesFragment : Fragment() {
         }
 
         if (userParcelable != null) {
-            "${userParcelable.user.username}'s Notes".also { binding.tvNotesTitle.text = it }
             setNotes(userParcelable.note)
         }
 
-        binding.fabNotesAdd.setOnClickListener {v -> showDialog()}
+        binding.fabNotesAdd.setOnClickListener {_ -> showDialog()}
     }
 
-    private fun showDialog() {}
+    private fun showDialog() {
+        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_fab_note, null)
+
+        MaterialAlertDialogBuilder(requireContext())
+            .setTitle("Create New Note")
+            .setView(dialogView)
+            .setPositiveButton("Add") { dialog, _ ->
+                val tfTitle = dialogView.findViewById<TextInputLayout>(R.id.tfFabNoteTitle)
+                val tfDesc = dialogView.findViewById<TextInputLayout>(R.id.tfFabNoteDesc)
+                val tfImage = dialogView.findViewById<TextInputLayout>(R.id.tfFabNoteImageUrl)
+
+                if (tfTitle != null && tfDesc != null && tfImage != null){
+                    notesViewModel.createNote(
+                        tfTitle.editText?.text.toString(),
+                        tfImage.editText?.text.toString(),
+                        tfDesc.editText?.text.toString()
+                    ).observe(viewLifecycleOwner) { result ->
+                        if (result != null) {
+                            when (result) {
+                                is Result.Loading -> {
+                                    binding.notesProgressBar.visibility = View.VISIBLE
+                                }
+                                is Result.Success -> {
+                                    setNotes(result.data.note)
+                                    binding.notesProgressBar.visibility = View.GONE
+                                }
+                                is Result.Error -> {
+                                    Toast.makeText(requireContext(), "Error Adding Note", Toast.LENGTH_SHORT).show()
+                                    binding.notesProgressBar.visibility = View.GONE
+                                }
+                            }
+                        }
+                    }
+                }
+                else {
+                    Toast.makeText(requireContext(), "Error Occured", Toast.LENGTH_SHORT).show()
+                    dialog.cancel()
+                }
+            }
+            .setNegativeButton("Cancel") { dialog, _ ->
+                dialog.cancel()
+            }
+            .show()
+    }
 
     private fun setNotes(listNote: List<NoteEntity>) {
         listNotesAdapter.submitList(listNote)

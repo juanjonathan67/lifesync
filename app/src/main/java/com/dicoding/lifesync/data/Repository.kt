@@ -51,6 +51,9 @@ class Repository private constructor(
                         userId = userData.userId
                         appExecutors.diskIO.execute {
                             userDao.deleteUser()
+                            userDao.deleteNote()
+                            userDao.deleteTask()
+
                             val userEntity = UserEntity (
                                 userId = userData.userId,
                                 username = userData.username,

@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="20dp"
-        android:backgroundTint="?attr/colorSurface"
+        android:backgroundTint="@android:color/transparent"
         android:src="@drawable/ic_arrowback_24dp" />
 
     <TextView
@@ -34,7 +34,7 @@
         android:layout_marginHorizontal="40dp"
         android:layout_marginTop="60dp"
         android:hint="@string/fragment_signUp_username"
-        app:boxBackgroundColor="?attr/colorTertiaryContainer">
+        app:boxBackgroundColor="@android:color/transparent">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
@@ -52,7 +52,7 @@
         android:layout_marginHorizontal="40dp"
         android:layout_marginTop="40dp"
         android:hint="@string/fragment_signUp_emailHint"
-        app:boxBackgroundColor="?attr/colorTertiaryContainer">
+        app:boxBackgroundColor="@android:color/transparent">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
@@ -70,7 +70,7 @@
         android:layout_marginHorizontal="40dp"
         android:layout_marginTop="40dp"
         android:hint="@string/fragment_signIn_passwordHint"
-        app:boxBackgroundColor="?attr/colorTertiaryContainer"
+        app:boxBackgroundColor="@android:color/transparent"
         app:endIconMode="password_toggle">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -88,7 +88,7 @@
         android:layout_marginHorizontal="40dp"
         android:layout_marginTop="40dp"
         android:hint="@string/fragment_signUp_confirmPasswordHint"
-        app:boxBackgroundColor="?attr/colorTertiaryContainer">
+        app:boxBackgroundColor="@android:color/transparent">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
@@ -106,7 +106,6 @@
         android:text="@string/fragment_signIn_button"
         android:textColor="@color/black"
         android:paddingVertical="15dp"
-        android:backgroundTint="?attr/colorTertiaryContainer"
         app:cornerRadius="15dp"/>
 
 

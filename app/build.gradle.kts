@@ -67,6 +67,11 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
 
+    // Permission
+    implementation("com.karumi:dexter:6.2.3")
+
+    // Ucrop
+    implementation("com.github.yalantis:ucrop:2.2.8")
 
     //persistence
     implementation(libs.androidx.lifecycle.livedata.ktx)
