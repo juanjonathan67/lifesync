@@ -3,17 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
-
-<!--    <TextView-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="8dp"-->
-<!--        android:layout_marginHorizontal="24dp"-->
-<!--        android:textColor="?colorOnPrimary"-->
-<!--        android:textStyle="bold"-->
-<!--        android:textSize="24sp"-->
-<!--        android:text="@string/create_new_note" />-->
 
     <com.google.android.material.textfield.TextInputLayout
         style="?attr/textInputFilledDenseStyle"
@@ -50,47 +41,28 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        style="?attr/textInputFilledDenseStyle"
-        android:id="@+id/tfFabNoteImageUrl"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginHorizontal="8dp"
-        android:hint="@string/image_url"
-        app:boxBackgroundColor="@android:color/transparent">
+        android:orientation="horizontal">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btFabNoteImage"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:inputType="text"/>
+            android:text="@string/choose_image" />
 
-    </com.google.android.material.textfield.TextInputLayout>
+        <TextView
+            android:id="@+id/tvFabNoteImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:textSize="18sp"
+            android:maxLines="1"
+            tools:text="file://"/>
 
-<!--    <LinearLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="8dp"-->
-<!--        android:layout_marginHorizontal="8dp"-->
-<!--        android:orientation="horizontal">-->
+    </LinearLayout>
 
-<!--        <Button-->
-<!--            android:id="@+id/btFabNoteCancel"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:textColor="?colorOnPrimary"-->
-<!--            android:text="@string/cancel"-->
-<!--            android:layout_weight="1"-->
-<!--            style="?android:attr/buttonBarButtonStyle" />-->
-
-<!--        <Button-->
-<!--            android:id="@+id/btFabNoteConfirm"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:textColor="?colorOnPrimary"-->
-<!--            android:text="@string/confirm"-->
-<!--            android:layout_weight="1"-->
-<!--            style="?android:attr/buttonBarButtonStyle" />-->
-
-<!--    </LinearLayout>-->
 </LinearLayout>

@@ -1,20 +1,24 @@
 package com.dicoding.lifesync.ui.main.tabs.notes
 
-import android.annotation.SuppressLint
+import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContract
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.dicoding.lifesync.Manifest
 import com.dicoding.lifesync.R
 import com.dicoding.lifesync.data.Result
 import com.dicoding.lifesync.data.local.entity.NoteEntity
@@ -25,10 +29,18 @@ import com.dicoding.lifesync.databinding.DialogFabNoteBinding
 import com.dicoding.lifesync.databinding.FragmentNotesBinding
 import com.dicoding.lifesync.ui.landing.signup.SignUpViewModel
 import com.dicoding.lifesync.ui.main.MainActivity.Companion.EXTRA_USER
+import com.dicoding.lifesync.ui.main.UCropActivity
 import com.dicoding.lifesync.utils.ViewModelFactory
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import com.karumi.dexter.Dexter
+import com.karumi.dexter.PermissionToken
+import com.karumi.dexter.listener.PermissionDeniedResponse
+import com.karumi.dexter.listener.PermissionGrantedResponse
+import com.karumi.dexter.listener.PermissionRequest
+import com.karumi.dexter.listener.single.PermissionListener
 
 class NotesFragment : Fragment() {
 
@@ -37,6 +49,25 @@ class NotesFragment : Fragment() {
     private val notesViewModel by viewModels<NotesViewModel> { ViewModelFactory.getInstance(requireActivity()) }
 
     private val listNotesAdapter = ListNotesAdapter()
+    private var currentImageUri: Uri? = null
+
+    private lateinit var cropImage: ActivityResultLauncher<String>
+    private val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_fab_note, null)
+
+    private val startForResult = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result: ActivityResult ->
+        if (result.resultCode == 101) {
+            // val tvNoteImage
+            val cropResult = result.data?.getStringExtra(UCropActivity.CROP_RESULT)
+            currentImageUri = result.data?.data
+
+            if (cropResult != null) {
+                currentImageUri = Uri.parse(cropResult)
+            }
+        }
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,6 +80,12 @@ class NotesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        cropImage = registerForActivityResult(ActivityResultContracts.GetContent()) { result ->
+            val cropIntent = Intent(requireActivity(), UCropActivity::class.java)
+            cropIntent.putExtra(UCropActivity.SEND_IMAGE_DATA, result.toString())
+            startForResult.launch(cropIntent)
+        }
 
         binding.rvNotes.layoutManager = StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL)
         binding.rvNotes.adapter = listNotesAdapter
@@ -68,20 +105,22 @@ class NotesFragment : Fragment() {
     }
 
     private fun showDialog() {
-        val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_fab_note, null)
+        val tfTitle = dialogView.findViewById<TextInputLayout>(R.id.tfFabNoteTitle)
+        val tfDesc = dialogView.findViewById<TextInputLayout>(R.id.tfFabNoteDesc)
+        val btChooseImage = dialogView.findViewById<MaterialButton>(R.id.btFabNoteImage)
+
+        btChooseImage.setOnClickListener {
+            startGallery()
+        }
 
         MaterialAlertDialogBuilder(requireContext())
             .setTitle("Create New Note")
             .setView(dialogView)
             .setPositiveButton("Add") { dialog, _ ->
-                val tfTitle = dialogView.findViewById<TextInputLayout>(R.id.tfFabNoteTitle)
-                val tfDesc = dialogView.findViewById<TextInputLayout>(R.id.tfFabNoteDesc)
-                val tfImage = dialogView.findViewById<TextInputLayout>(R.id.tfFabNoteImageUrl)
-
-                if (tfTitle != null && tfDesc != null && tfImage != null){
+                if (tfTitle != null && tfDesc != null && currentImageUri != null){
                     notesViewModel.createNote(
                         tfTitle.editText?.text.toString(),
-                        tfImage.editText?.text.toString(),
+                        currentImageUri.toString(),
                         tfDesc.editText?.text.toString()
                     ).observe(viewLifecycleOwner) { result ->
                         if (result != null) {
@@ -110,6 +149,33 @@ class NotesFragment : Fragment() {
                 dialog.cancel()
             }
             .show()
+    }
+
+    private fun startGallery() {
+        val permission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            android.Manifest.permission.READ_MEDIA_IMAGES
+        } else {
+            android.Manifest.permission.READ_EXTERNAL_STORAGE
+        }
+        Dexter.withContext(requireActivity())
+            .withPermission(permission)
+            .withListener(object : PermissionListener {
+                override fun onPermissionGranted(p0: PermissionGrantedResponse?) {
+                    cropImage.launch("image/*")
+                }
+
+                override fun onPermissionDenied(p0: PermissionDeniedResponse?) {
+                    Toast.makeText(requireContext(), "Permission Denied", Toast.LENGTH_SHORT).show()
+                }
+
+                override fun onPermissionRationaleShouldBeShown(
+                    permissionRequest: PermissionRequest?,
+                    permissionToken: PermissionToken?
+                ) {
+                    permissionToken?.continuePermissionRequest()
+                }
+
+            }).check()
     }
 
     private fun setNotes(listNote: List<NoteEntity>) {
